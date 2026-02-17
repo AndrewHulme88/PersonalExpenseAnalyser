@@ -1,30 +1,32 @@
 Date,Description,Amount,Category
-2025-01-01,Salary,3200,Income
-2025-01-02,Rent Payment,-1200,Rent
-2025-01-03,Starbucks,-8,Food
-2025-01-04,Uber,-15,Transport
-2025-01-05,Amazon Purchase,-45,Shopping
-2025-01-06,Grocery Store,-95,Food
-2025-01-07,Netflix,-15,Entertainment
-2025-01-09,Electric Bill,-60,Bills
-2025-01-10,Gas Station,-40,Transport
-2025-01-12,Restaurant Dinner,-55,Food
-2025-01-15,Internet Bill,-70,Bills
-2025-01-16,Clothing Store,-120,Shopping
-2025-01-18,Movie Theater,-25,Entertainment
-2025-01-20,Grocery Store,-88,Food
-2025-01-22,Uber,-18,Transport
-2025-01-25,Amazon Purchase,-60,Shopping
-2025-02-01,Salary,3200,Income
-2025-02-02,Rent Payment,-1200,Rent
-2025-02-03,Starbucks,-7,Food
-2025-02-04,Gas Station,-38,Transport
-2025-02-05,Grocery Store,-102,Food
-2025-02-07,Spotify,-10,Entertainment
-2025-02-10,Electric Bill,-58,Bills
-2025-02-12,Restaurant Dinner,-62,Food
-2025-02-14,Gift Purchase,-80,Shopping
-2025-02-18,Movie Theater,-22,Entertainment
-2025-02-20,Grocery Store,-90,Food
-2025-02-22,Uber,-16,Transport
-2025-02-25,Online Shopping,-110,Shopping
+2025-01-01,Salary,3200.0,Income
+2025-01-02,Rent Payment,-1200.0,Rent
+2025-01-03,Starbucks,-8.0,Food
+2025-01-04,Uber,-15.0,Transport
+2025-01-05,Amazon Purchase,-45.0,Shopping
+2025-01-06,Grocery Store,-95.0,Food
+2025-01-07,Netflix,-15.0,Entertainment
+2025-01-09,Electric Bill,-60.0,Bills
+2025-01-10,Gas Station,-40.0,Transport
+2025-01-12,Restaurant Dinner,-55.0,Food
+2025-01-15,Internet Bill,-70.0,Bills
+2025-01-16,Clothing Store,-120.0,Shopping
+2025-01-18,Movie Theater,-25.0,Entertainment
+2025-01-20,Grocery Store,-88.0,Food
+2025-01-22,Uber,-18.0,Transport
+2025-01-25,Amazon Purchase,-60.0,Shopping
+2025-02-01,Salary,3200.0,Income
+2025-02-02,Rent Payment,-1200.0,Rent
+2025-02-03,Starbucks,-7.0,Food
+2025-02-04,Gas Station,-38.0,Transport
+2025-02-05,Grocery Store,-102.0,Food
+2025-02-07,Spotify,-10.0,Entertainment
+2025-02-10,Electric Bill,-58.0,Bills
+2025-02-12,Restaurant Dinner,-62.0,Food
+2025-02-14,Gift Purchase,-80.0,Shopping
+2025-02-18,Movie Theater,-22.0,Entertainment
+2025-02-20,Grocery Store,-90.0,Food
+2025-02-22,Uber,-16.0,Transport
+2025-02-25,Online Shopping,-110.0,Shopping
+2026-02-17,Massage,120.0,Other
+2026-02-17,Massage,120.0,Other
