@@ -38,6 +38,26 @@ with st.form("transaction_form"):
         st.success("Transaction added! Refreshing...")
         st.rerun()
 
+# Delete Transaction
+st.header("Delete Transaction")
+
+display_df = df.copy()
+display_df["Date"] = display_df["Date"].dt.date
+
+row_to_delete = st.selectbox(
+    "Select a transaction to delete",
+    display_df.index,
+    format_func=lambda x: f"{display_df.loc[x, 'Date']} | "
+    f"{display_df.loc[x, 'Description']} | "
+    f"{display_df.loc[x, 'Amount']}"
+)
+
+if st.button("Delete Selected Transaction"):
+    df = df.drop(row_to_delete)
+    df.to_csv("transactions.csv", index=False)
+    st.success("Transaction deleted!")
+    st.rerun()
+
 # Monthly Spending
 expenses = df[df["Amount"] < 0]
 monthly = (
