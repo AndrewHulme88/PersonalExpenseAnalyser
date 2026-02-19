@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 
 st.title("Personal Expense Tracker")
 
@@ -53,7 +54,7 @@ with st.form("transaction_form"):
     date = st.date_input("Date")
     description = st.text_input("Description")
     amount = st.number_input("Amount", step=0.01)
-    category = st.selectbox("Category", ["Food", "Transport", "Shopping", "Bills", "Entertainment", "Rent", "Other"])
+    category = st.selectbox("Category", ["Food", "Transport", "Shopping", "Bills", "Entertainment", "Rent", "Income" "Other"])
     
     submitted = st.form_submit_button("Add Transaction")
 
@@ -143,11 +144,29 @@ if st.button("Delete Selected Transaction"):
     st.rerun()
 
 # Monthly Spending
-expenses = df[df["Amount"] < 0]
 monthly = (
     filtered_df.groupby(filtered_df["Date"].dt.to_period("M"))["Amount"]
     .sum().astype(float)
 )
 
 st.header("Monthly Spending")
-st.bar_chart(monthly)
+
+monthly_df = monthly.reset_index()
+monthly_df.columns = ["Month", "Amount"]
+monthly_df["Month"] = monthly_df["Month"].astype(str)
+
+fig = px.bar(
+    monthly_df,
+    x="Month",
+    y="Amount",
+    title="Monthly Spending",
+    text_auto=True
+)
+
+fig.update_layout(
+    xaxis_title="Month",
+    yaxis_title="Net Amount",
+    template="plotly_white"
+)
+
+st.plotly_chart(fig, use_container_width=True)
