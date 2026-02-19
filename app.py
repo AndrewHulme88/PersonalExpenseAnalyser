@@ -7,9 +7,42 @@ st.title("Personal Expense Tracker")
 df = pd.read_csv("transactions.csv")
 df["Date"] = pd.to_datetime(df["Date"], format="mixed")
 
+# Filter Data
+st.header("Filters")
+
+# Category Filter
+categories = ["All"] + sorted(df["Category"].unique().tolist())
+selected_category = st.selectbox("Category", categories)
+
+# Month Filter
+df["Month"] = df["Date"].dt.to_period("M").astype(str)
+months = ["All"] + sorted(df["Month"].unique().tolist())
+selected_month = st.selectbox("Month", months)
+
+# Incom toggle
+include_income = st.checkbox("Include Income", value=True)
+
+# Apply Filters
+filtered_df = df.copy()
+
+if selected_category != "All":
+    filtered_df = filtered_df[
+        filtered_df["Category"] == selected_category
+    ]
+
+if selected_month != "All":
+    filtered_df = filtered_df[
+        filtered_df["Month"] == selected_month
+    ]
+
+if not include_income:
+    filtered_df = filtered_df[
+        filtered_df["Amount"] < 0
+    ]
+
 # Show Data
 st.header("Transactions")
-display_df = df.copy()
+display_df = filtered_df.copy()
 display_df["Date"] = display_df["Date"].dt.date
 st.dataframe(display_df)
 
@@ -112,7 +145,7 @@ if st.button("Delete Selected Transaction"):
 # Monthly Spending
 expenses = df[df["Amount"] < 0]
 monthly = (
-    expenses.groupby(expenses["Date"].dt.to_period("M"))["Amount"]
+    filtered_df.groupby(filtered_df["Date"].dt.to_period("M"))["Amount"]
     .sum().astype(float)
 )
 
