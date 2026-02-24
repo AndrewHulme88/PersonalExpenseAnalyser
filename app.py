@@ -146,27 +146,36 @@ if st.button("Delete Selected Transaction"):
 # Monthly Spending
 monthly = (
     filtered_df.groupby(filtered_df["Date"].dt.to_period("M"))["Amount"]
-    .sum().astype(float)
+    .sum().reset_index()
 )
+
+monthly["Month"] = monthly["Date"].astype(str)
+monthly = monthly.sort_values("Date")
+y_max = df["Amount"].abs().max() * 1.2
 
 st.header("Monthly Spending")
 
-monthly_df = monthly.reset_index()
-monthly_df.columns = ["Month", "Amount"]
-monthly_df["Month"] = monthly_df["Month"].astype(str)
-
 fig = px.bar(
-    monthly_df,
+    monthly,
     x="Month",
     y="Amount",
     title="Monthly Spending",
     text_auto=True
 )
 
+fig.update_traces(
+    marker_color="#4CAF50",
+    textposition="outside"
+)
+
 fig.update_layout(
+    template="plotly_white",
     xaxis_title="Month",
     yaxis_title="Net Amount",
-    template="plotly_white"
+    xaxis=dict(type="category"),
+    yaxis=dict(range=[-y_max, y_max]),
+    uniformtext_minsize=8,
+    uniformtext_mode="hide"
 )
 
 st.plotly_chart(fig, use_container_width=True)
