@@ -36,11 +36,6 @@ if selected_month != "All":
         filtered_df["Month"] == selected_month
     ]
 
-if not include_income:
-    filtered_df = filtered_df[
-        filtered_df["Amount"] < 0
-    ]
-
 # Show Data
 st.header("Transactions")
 display_df = filtered_df.copy()
@@ -54,7 +49,7 @@ with st.form("transaction_form"):
     date = st.date_input("Date")
     description = st.text_input("Description")
     amount = st.number_input("Amount", step=0.01)
-    category = st.selectbox("Category", ["Food", "Transport", "Shopping", "Bills", "Entertainment", "Rent", "Income" "Other"])
+    category = st.selectbox("Category", ["Food", "Transport", "Shopping", "Bills", "Entertainment", "Rent", "Income", "Other"])
     
     submitted = st.form_submit_button("Add Transaction")
 
@@ -144,38 +139,69 @@ if st.button("Delete Selected Transaction"):
     st.rerun()
 
 # Monthly Spending
-monthly = (
-    filtered_df.groupby(filtered_df["Date"].dt.to_period("M"))["Amount"]
-    .sum().reset_index()
+filtered_df["MonthPeriod"] = filtered_df["Date"].dt.to_period("M")
+income_df = filtered_df[filtered_df["Amount"] > 0]
+expenses_df = filtered_df[filtered_df["Amount"] < 0]
+
+monthly_income = (
+    income_df.groupby("MonthPeriod")["Amount"]
+    .sum().reset_index(name="Income")
 )
 
-monthly["Month"] = monthly["Date"].astype(str)
-monthly = monthly.sort_values("Date")
-y_max = df["Amount"].abs().max() * 1.2
+monthly_expenses = (
+    expenses_df.groupby("MonthPeriod")["Amount"]
+    .sum().abs().reset_index(name="Expenses")
+)
+
+monthly = pd.merge(
+    monthly_income,
+    monthly_expenses,
+    on="MonthPeriod",
+    how="outer"
+).fillna(0)
+
+monthly["Month"] = monthly["MonthPeriod"].astype(str)
+monthly = monthly.sort_values("MonthPeriod")
+
+if not include_income:
+    monthly["Income"] = 0
+# monthly = (
+#     filtered_df.groupby(filtered_df["Date"].dt.to_period("M"))["Amount"]
+#     .sum().reset_index()
+# )
+
+# monthly["Month"] = monthly["Date"].astype(str)
+# monthly = monthly.sort_values("Date")
+
+# monthly["Income"] = monthly["Amount"].apply(lambda x: x if x > 0 else 0)
+# monthly["Expenses"] = monthly["Amount"].apply(lambda x: -x if x < 0 else 0)
+
+# if not include_income:
+#     monthly["Income"] = 0
 
 st.header("Monthly Spending")
 
 fig = px.bar(
     monthly,
     x="Month",
-    y="Amount",
-    title="Monthly Spending",
+    y=["Income", "Expenses"],
+    title="Monthly Income and Expenses",
+    barmode="group",
     text_auto=True
 )
 
 fig.update_traces(
-    marker_color="#4CAF50",
     textposition="outside"
 )
 
 fig.update_layout(
     template="plotly_white",
     xaxis_title="Month",
-    yaxis_title="Net Amount",
+    yaxis_title="Amount",
     xaxis=dict(type="category"),
-    yaxis=dict(range=[-y_max, y_max]),
-    uniformtext_minsize=8,
-    uniformtext_mode="hide"
 )
+
+fig.data[0].marker.color = "green"
+fig.data[1].marker.color = "red"
 
 st.plotly_chart(fig, use_container_width=True)
